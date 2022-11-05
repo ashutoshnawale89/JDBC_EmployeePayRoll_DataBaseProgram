@@ -11,8 +11,8 @@ public class JdbcProgram {
 
 
 
-	public static void ConnectionCreate() throws MySqlConnectionExceptionHandle {
-		boolean result;
+	public static int ConnectionCreate(String names) throws MySqlConnectionExceptionHandle {
+		int result=0;
 		String jdbcUrl = "jdbc:mysql://localhost:3306/payroll";
 		String userName = "root";
 		String password = "Ashu$1998";
@@ -26,18 +26,26 @@ public class JdbcProgram {
 				System.out.println("connection created ......");
 			}
 			
-			String q="select * from employee_payroll ;";
+			String q="select * from employee_payroll where gender=?";
+			
+			String name=names;
 			
 			PreparedStatement pstmt=connection.prepareStatement(q);
-			// put the value to change it		
+			// put the value to change it
+			pstmt.setNString(1,name);			
 		    pstmt.executeQuery();
 			System.out.println("Done...");
 			ResultSet resultSet = pstmt.executeQuery();
 			 while (resultSet.next()) {
-                 System.out.println( resultSet.getString("name") + "   "
+				 result++;
+                 System.out.println(resultSet.getInt("id") + "  "
+			                       + resultSet.getString("name") + "   "
+                		           + resultSet.getString("gender") + "  " 
+			                       + resultSet.getString("salary") + "  " 
                 		           +resultSet.getString("start_Date") );
              }
 			connection.close();
+			return result;
 		}  catch(Exception e  ) {
 			throw new MySqlConnectionExceptionHandle(MySqlConnectionExceptionHandle.ExceptionType.ENTERED_DATA_NOT_CONNECTED_WRONG_INPUTS,"Enter Correct Input");
 			 }
@@ -46,8 +54,8 @@ public class JdbcProgram {
 
 public static void main(String[] args) throws MySqlConnectionExceptionHandle {
 	JdbcProgram obj=new JdbcProgram();
-	System.out.println("JOINING DATE OF ALL EMPLOYEE");
-	obj.ConnectionCreate();
+	String gender="female";
+	System.out.println("Number of "+gender+" is  : "+obj.ConnectionCreate(gender));
 }
 }
 
