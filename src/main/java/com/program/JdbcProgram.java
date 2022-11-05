@@ -43,6 +43,7 @@ public class JdbcProgram {
 	}
 
 	public static void main(String[] args) throws MySqlConnectionExceptionHandle {
+		System.out.println("Welcome To The JDBC Program");
 		DriverLoaded();
 		ListDrivers();
 		ConnectionCreate();
