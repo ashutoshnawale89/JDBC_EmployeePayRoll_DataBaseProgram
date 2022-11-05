@@ -10,7 +10,8 @@ import java.util.Enumeration;
 public class JdbcProgram {
 
 
-	public static void ConnectionCreate() throws MySqlConnectionExceptionHandle {
+	public static boolean ConnectionCreate(String query) throws MySqlConnectionExceptionHandle {
+		boolean result=true;
 		String jdbcUrl = "jdbc:mysql://localhost:3306/payroll";
 		String userName = "root";
 		String password = "Ashu$1998";
@@ -24,6 +25,8 @@ public class JdbcProgram {
 				System.out.println("connection created ......");
 			}
 			Statement statement = connection.createStatement();
+          result=statement.execute(query);			
+			
 			ResultSet resultSet = statement.executeQuery("SELECT*FROM employee_payroll");
 			 while (resultSet.next()) {
                  System.out.println(resultSet.getInt("id") + "  " + resultSet.getString("name") + "   " + resultSet.getString("gender") + "  " + resultSet.getString("salary") + "  " +resultSet.getString("start_Date") );
@@ -32,12 +35,7 @@ public class JdbcProgram {
 		}  catch(Exception e  ) {
 			throw new MySqlConnectionExceptionHandle(MySqlConnectionExceptionHandle.ExceptionType.ENTERED_DATA_NOT_CONNECTED_WRONG_INPUTS,"Enter Correct Input");
 			 }
-	}
-
-	public static void main(String[] args) throws MySqlConnectionExceptionHandle {
-		System.out.println("Welcome To The JDBC Program");
-		ConnectionCreate();
-
+		return result;
 	}
 }
 
